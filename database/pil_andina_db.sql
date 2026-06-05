@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2026 a las 21:10:18
+-- Tiempo de generación: 06-06-2026 a las 00:26:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -197,7 +197,9 @@ INSERT INTO `detalle_pedido` (`id_detalle`, `id_pedido`, `id_producto`, `cantida
 (2, 1, 2, 300, 18.00),
 (3, 2, 3, 400, 10.50),
 (4, 3, 4, 200, 21.50),
-(5, 3, 5, 150, 27.00);
+(5, 3, 5, 150, 27.00),
+(6, 4, 4, 10, 22.00),
+(7, 4, 8, 78, 10.50);
 
 -- --------------------------------------------------------
 
@@ -320,6 +322,20 @@ CREATE TABLE `log_accesos` (
   `fecha_hora` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `log_accesos`
+--
+
+INSERT INTO `log_accesos` (`id_log`, `username`, `resultado`, `ip_origen`, `fecha_hora`) VALUES
+(1, 'admin_pil', 'FALLO', '127.0.0.1', '2026-06-05 20:44:17'),
+(2, 'admin_pil', 'FALLO', '127.0.0.1', '2026-06-05 20:44:36'),
+(3, 'admin_pil', 'FALLO', '127.0.0.1', '2026-06-05 20:44:55'),
+(4, 'admin_pil', 'FALLO', '127.0.0.1', '2026-06-05 20:55:40'),
+(5, 'admin_pil', 'FALLO', '127.0.0.1', '2026-06-05 20:56:05'),
+(6, 'admin_pil', 'EXITO', '127.0.0.1', '2026-06-05 21:43:22'),
+(7, 'gerente_lp', 'EXITO', '127.0.0.1', '2026-06-05 21:44:34'),
+(8, 'dist_la_paz', 'EXITO', '127.0.0.1', '2026-06-05 21:46:40');
+
 -- --------------------------------------------------------
 
 --
@@ -404,7 +420,8 @@ CREATE TABLE `pedido` (
 INSERT INTO `pedido` (`id_pedido`, `id_distribuidor`, `fecha_pedido`, `fecha_entrega_requerida`, `estado`, `observaciones`, `monto_total`) VALUES
 (1, 1, '2025-06-01', '2025-06-05', 'Pendiente', NULL, 11400.00),
 (2, 2, '2025-06-02', '2025-06-07', 'Pendiente', NULL, 4200.00),
-(3, 3, '2025-06-03', '2025-06-10', 'Despachado', NULL, 8350.00);
+(3, 3, '2025-06-03', '2025-06-10', 'Despachado', NULL, 8350.00),
+(4, 1, '2026-06-05', '2026-06-06', 'Pendiente', 'adsdas', 1039.00);
 
 -- --------------------------------------------------------
 
@@ -490,7 +507,7 @@ DELIMITER ;
 CREATE TABLE `usuario_sistema` (
   `id_usuario` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password_hash` varchar(255) NOT NULL COMMENT 'SHA2 almacenado',
+  `password_hash` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
   `rol` enum('Administrador','Gerente','Distribuidor') NOT NULL,
   `id_empleado_relacionado` int(11) DEFAULT NULL COMMENT 'CI o ID de persona física',
@@ -506,9 +523,9 @@ CREATE TABLE `usuario_sistema` (
 --
 
 INSERT INTO `usuario_sistema` (`id_usuario`, `username`, `password_hash`, `email`, `rol`, `id_empleado_relacionado`, `ultimo_login`, `activo`, `intentos_fallidos`, `bloqueado_hasta`, `fecha_creacion`) VALUES
-(1, 'admin_pil', '1d431e4e0e03d2b8f4ac11da3d09551a8acea7ffea3478ffeeb5ad33042d19c7', 'admin@pilandina.bo', 'Administrador', 1001, NULL, 1, 0, NULL, '2026-06-05 19:09:53'),
-(2, 'gerente_lp', 'ac909385d0414717dc294cd245b0954fc0d5ad30422c2fa6e16e97c38904fac0', 'gerente.lp@pilandina.bo', 'Gerente', 1002, NULL, 1, 0, NULL, '2026-06-05 19:09:53'),
-(3, 'dist_la paz', '8334f4b02aee44802c2c456a3c1b5588e5cd53f93037cae5ba2b246c912133aa', 'dist1@correo.com', 'Distribuidor', 2001, NULL, 1, 0, NULL, '2026-06-05 19:09:53');
+(1, 'admin_pil', '1d431e4e0e03d2b8f4ac11da3d09551a8acea7ffea3478ffeeb5ad33042d19c7', 'admin@pilandina.bo', 'Administrador', NULL, '2026-06-05 21:43:22', 1, 0, NULL, '2026-06-05 20:50:37'),
+(2, 'gerente_lp', 'ac909385d0414717dc294cd245b0954fc0d5ad30422c2fa6e16e97c38904fac0', 'gerente@pilandina.bo', 'Gerente', NULL, '2026-06-05 21:44:34', 1, 0, NULL, '2026-06-05 20:50:37'),
+(3, 'dist_la_paz', '8334f4b02aee44802c2c456a3c1b5588e5cd53f93037cae5ba2b246c912133aa', 'distribuidor@pilandina.bo', 'Distribuidor', NULL, '2026-06-05 21:46:40', 1, 0, NULL, '2026-06-05 20:50:37');
 
 -- --------------------------------------------------------
 
@@ -728,7 +745,7 @@ ALTER TABLE `bodega`
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `distribuidor`
@@ -752,7 +769,7 @@ ALTER TABLE `inventario_bodega`
 -- AUTO_INCREMENT de la tabla `log_accesos`
 --
 ALTER TABLE `log_accesos`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `lote_produccion`
