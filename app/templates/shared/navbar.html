@@ -1,0 +1,17 @@
+<nav class="navbar">
+    <div class="nav-brand"><span>🍺</span> Pil Andina</div>
+    <div class="nav-links">
+        {% if session.rol == 'Administrador' %}
+            <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint.startswith('admin') %}active{% endif %}">Panel Admin</a>
+        {% elif session.rol == 'Gerente' %}
+            <a href="{{ url_for('gerente.dashboard') }}" class="{% if request.endpoint.startswith('gerente') %}active{% endif %}">Panel Gerente</a>
+        {% else %}
+            <a href="{{ url_for('distribuidor.dashboard') }}" class="{% if request.endpoint.startswith('distribuidor') %}active{% endif %}">Panel Distribuidor</a>
+        {% endif %}
+    </div>
+    <div class="nav-user">
+        <span class="rol-badge">{{ session.rol }}</span>
+        <span>{{ session.username }}</span>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-secondary">Salir</a>
+    </div>
+</nav>

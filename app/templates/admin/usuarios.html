@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Usuarios - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header"><h1>Gestion de Usuarios</h1></div>
+
+        <div class="card" style="margin-bottom:25px;">
+            <div class="card-header"><h3>Crear Nuevo Usuario</h3></div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin.crear_usuario_route') }}">
+                    <div class="filter-bar">
+                        <div class="filter-group"><label>Usuario</label><input type="text" name="username" required></div>
+                        <div class="filter-group"><label>Email</label><input type="email" name="email" required></div>
+                        <div class="filter-group"><label>Contrasena</label><input type="password" name="password" required></div>
+                        <div class="filter-group"><label>Rol</label>
+                            <select name="rol"><option value="Administrador">Administrador</option><option value="Gerente">Gerente</option><option value="Distribuidor">Distribuidor</option></select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h3>Usuarios del Sistema</h3></div>
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>ID</th><th>Usuario</th><th>Email</th><th>Rol</th><th>Estado</th><th>Ultimo Login</th><th>Acciones</th></tr>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>{{ u.id_usuario }}</td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.email }}</td>
+                        <td><span class="badge badge-{% if u.rol=='Administrador' %}danger{% elif u.rol=='Gerente' %}warning{% else %}info{% endif %}">{{ u.rol }}</span></td>
+                        <td>{% if u.activo %}<span class="badge badge-success">Activo</span>{% else %}<span class="badge badge-secondary">Inactivo</span>{% endif %}</td>
+                        <td>{{ u.ultimo_login or 'Nunca' }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.toggle_usuario', id_usuario=u.id_usuario, activo=0 if u.activo else 1) }}" class="btn btn-sm {% if u.activo %}btn-danger{% else %}btn-success{% endif %}">
+                                {% if u.activo %}Desactivar{% else %}Activar{% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

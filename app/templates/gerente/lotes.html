@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Lotes - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Gestion de Lotes</h1></div>
+    <div class="filter-bar">
+        <form method="GET" class="filter-bar" style="width:100%;">
+            <div class="filter-group"><label>Producto</label>
+                <select name="producto"><option value="">Todos</option>{% for p in productos %}<option value="{{ p.id_producto }}" {% if request.args.get('producto')|int==p.id_producto %}selected{% endif %}>{{ p.nombre_comercial }}</option>{% endfor %}</select>
+            </div>
+            <div class="filter-group"><label>Planta</label>
+                <select name="planta"><option value="">Todas</option>{% for p in plantas %}<option value="{{ p.id_planta }}" {% if request.args.get('planta')|int==p.id_planta %}selected{% endif %}>{{ p.nombre }}</option>{% endfor %}</select>
+            </div>
+            <div class="filter-group"><label><input type="checkbox" name="vencer" value="1" {% if request.args.get('vencer')=='1' %}checked{% endif %}> Proximos a vencer</label></div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="data-table">
+                <tr><th>Lote</th><th>Producto</th><th>Planta</th><th>Produccion</th><th>Vencimiento</th><th>Cantidad</th><th>Calidad</th><th>Tecnico</th></tr>
+                {% for l in lotes %}
+                <tr class="{% if l.fecha_vencimiento|string < '2025-07-01' %}warning{% endif %}">
+                    <td>{{ l.numero_lote }}</td>
+                    <td>{{ l.nombre_comercial }} {{ l.presentacion }}</td>
+                    <td>{{ l.planta_nombre }}</td>
+                    <td>{{ l.fecha_produccion }}</td>
+                    <td>{{ l.fecha_vencimiento }}</td>
+                    <td>{{ l.cantidad_producida | format_number }}</td>
+                    <td><span class="badge badge-{% if l.control_calidad=='Aprobado' %}success{% elif l.control_calidad=='Rechazado' %}danger{% else %}warning{% endif %}">{{ l.control_calidad }}</span></td>
+                    <td>{{ l.tecnico_responsable }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

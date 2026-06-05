@@ -1,0 +1,12 @@
+<ul class="sidebar-menu">
+    <li class="section-title">Administracion</li>
+    <li><a href="{{ url_for('admin.usuarios') }}" class="{% if request.endpoint=='admin.usuarios' %}active{% endif %}">👥 Usuarios</a></li>
+    <li><a href="{{ url_for('admin.auditoria') }}" class="{% if request.endpoint=='admin.auditoria' %}active{% endif %}">📋 Auditoria</a></li>
+    <li><a href="{{ url_for('admin.monitoreo') }}" class="{% if request.endpoint=='admin.monitoreo' %}active{% endif %}">📡 Monitoreo</a></li>
+    <li class="section-title">Reportes</li>
+    <li><a href="{{ url_for('admin.reporte_stock') }}">📦 Stock</a></li>
+    <li><a href="{{ url_for('admin.reporte_vencer') }}">⏰ Vencer</a></li>
+    <li><a href="{{ url_for('admin.reporte_rotacion') }}">🔄 Rotacion</a></li>
+    <li class="section-title">Sistema</li>
+    <li><a href="{{ url_for('admin.backups') }}" class="{% if request.endpoint=='admin.backups' %}active{% endif %}">💾 Backups</a></li>
+</ul>

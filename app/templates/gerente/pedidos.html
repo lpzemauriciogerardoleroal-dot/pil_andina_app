@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Pedidos - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Gestion de Pedidos</h1></div>
+    <div class="filter-bar">
+        <form method="GET" class="filter-bar" style="width:100%;">
+            <div class="filter-group"><label>Estado</label>
+                <select name="estado"><option value="">Todos</option><option value="Pendiente" {% if request.args.get('estado')=='Pendiente' %}selected{% endif %}>Pendiente</option><option value="Despachado" {% if request.args.get('estado')=='Despachado' %}selected{% endif %}>Despachado</option><option value="Entregado" {% if request.args.get('estado')=='Entregado' %}selected{% endif %}>Entregado</option><option value="Cancelado" {% if request.args.get('estado')=='Cancelado' %}selected{% endif %}>Cancelado</option></select>
+            </div>
+            <div class="filter-group"><label>Desde</label><input type="date" name="desde" value="{{ request.args.get('desde','') }}"></div>
+            <div class="filter-group"><label>Hasta</label><input type="date" name="hasta" value="{{ request.args.get('hasta','') }}"></div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="data-table">
+                <tr><th>ID</th><th>Distribuidor</th><th>Ciudad</th><th>Fecha Pedido</th><th>Fecha Entrega</th><th>Estado</th><th>Monto Total</th></tr>
+                {% for p in pedidos %}
+                <tr>
+                    <td>#{{ p.id_pedido }}</td>
+                    <td>{{ p.distribuidor_nombre }}</td>
+                    <td>{{ p.ciudad }}</td>
+                    <td>{{ p.fecha_pedido }}</td>
+                    <td>{{ p.fecha_entrega_requerida }}</td>
+                    <td><span class="badge badge-{% if p.estado=='Entregado' %}success{% elif p.estado=='Pendiente' %}warning{% elif p.estado=='Cancelado' %}danger{% else %}info{% endif %}">{{ p.estado }}</span></td>
+                    <td>{{ p.monto_total | format_money }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

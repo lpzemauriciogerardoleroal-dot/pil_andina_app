@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Dashboard - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header">
+        <h1>Dashboard General</h1>
+        <p>Resumen de operaciones y metricas clave</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="icon">📦</div>
+            <div class="value">{{ metricas.total_productos }}</div>
+            <div class="label">Productos Activos</div>
+        </div>
+        <div class="metric-card">
+            <div class="icon">🏭</div>
+            <div class="value">{{ metricas.total_lotes }}</div>
+            <div class="label">Lotes Aprobados</div>
+        </div>
+        <div class="metric-card">
+            <div class="icon">🚚</div>
+            <div class="value">{{ metricas.total_distribuidores }}</div>
+            <div class="label">Distribuidores</div>
+        </div>
+        <div class="metric-card">
+            <div class="icon">📋</div>
+            <div class="value">{{ metricas.pedidos_pendientes }}</div>
+            <div class="label">Pedidos Pendientes</div>
+            <div class="trend up">Requieren atencion</div>
+        </div>
+        <div class="metric-card">
+            <div class="icon">📊</div>
+            <div class="value">{{ metricas.stock_total | format_number }}</div>
+            <div class="label">Unidades en Stock</div>
+        </div>
+        <div class="metric-card">
+            <div class="icon">⏰</div>
+            <div class="value">{{ metricas.proximos_vencer }}</div>
+            <div class="label">Lotes Proximos a Vencer</div>
+            <div class="trend down">30 dias</div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-header"><h3>Stock por Planta</h3></div>
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Planta</th><th>Stock Total</th></tr>
+                    {% for s in stock_plantas %}
+                    <tr><td>{{ s.planta }}</td><td>{{ s.stock | format_number }}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>Pedidos por Estado</h3></div>
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Estado</th><th>Cantidad</th></tr>
+                    {% for p in pedidos_estado %}
+                    <tr><td><span class="badge badge-{% if p.estado=='Entregado' %}success{% elif p.estado=='Pendiente' %}warning{% elif p.estado=='Cancelado' %}danger{% else %}info{% endif %}">{{ p.estado }}</span></td><td>{{ p.cantidad }}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

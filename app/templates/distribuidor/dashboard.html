@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Panel Distribuidor - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Panel de Distribuidor</h1><p>Gestion de pedidos y consultas</p></div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-header"><h3>📋 Mis Pedidos</h3></div>
+            <div class="card-body"><a href="{{ url_for('distribuidor.pedidos') }}" class="btn btn-primary">Ver Pedidos</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>📝 Nuevo Pedido</h3></div>
+            <div class="card-body"><a href="{{ url_for('distribuidor.nuevo_pedido') }}" class="btn btn-primary">Crear Pedido</a></div>
+        </div>
+    </div>
+    <div class="card" style="margin-top:25px;">
+        <div class="card-header"><h3>Ultimos Pedidos</h3></div>
+        <div class="card-body">
+            <table class="data-table">
+                <tr><th>ID</th><th>Fecha</th><th>Entrega</th><th>Estado</th><th>Monto</th></tr>
+                {% for p in pedidos[:5] %}
+                <tr>
+                    <td>#{{ p.id_pedido }}</td>
+                    <td>{{ p.fecha_pedido }}</td>
+                    <td>{{ p.fecha_entrega_requerida }}</td>
+                    <td><span class="badge badge-{% if p.estado=='Entregado' %}success{% elif p.estado=='Pendiente' %}warning{% elif p.estado=='Cancelado' %}danger{% else %}info{% endif %}">{{ p.estado }}</span></td>
+                    <td>{{ p.monto_total | format_money }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Pedido #{{ pedido.id_pedido }} - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header">
+        <h1>Pedido #{{ pedido.id_pedido }}</h1>
+        <a href="{{ url_for('distribuidor.pedidos') }}" class="btn btn-secondary">← Volver</a>
+    </div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-header"><h3>Informacion del Pedido</h3></div>
+            <div class="card-body">
+                <p><strong>Distribuidor:</strong> {{ pedido.distribuidor_nombre }}</p>
+                <p><strong>NIT:</strong> {{ pedido.nit }}</p>
+                <p><strong>Direccion:</strong> {{ pedido.direccion }}</p>
+                <p><strong>Telefono:</strong> {{ pedido.telefono }}</p>
+                <p><strong>Fecha Pedido:</strong> {{ pedido.fecha_pedido }}</p>
+                <p><strong>Fecha Entrega:</strong> {{ pedido.fecha_entrega_requerida }}</p>
+                <p><strong>Estado:</strong> <span class="badge badge-{% if pedido.estado=='Entregado' %}success{% elif pedido.estado=='Pendiente' %}warning{% elif pedido.estado=='Cancelado' %}danger{% else %}info{% endif %}">{{ pedido.estado }}</span></p>
+                <p><strong>Monto Total:</strong> {{ pedido.monto_total | format_money }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>Detalle de Productos</h3></div>
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Producto</th><th>Codigo</th><th>Cantidad</th><th>Precio Unit.</th><th>Subtotal</th></tr>
+                    {% for d in pedido.detalles %}
+                    <tr>
+                        <td>{{ d.nombre_comercial }} {{ d.presentacion }}</td>
+                        <td>{{ d.codigo_unico }}</td>
+                        <td>{{ d.cantidad }}</td>
+                        <td>{{ d.precio_unitario | format_money }}</td>
+                        <td>{{ (d.cantidad * d.precio_unitario) | format_money }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

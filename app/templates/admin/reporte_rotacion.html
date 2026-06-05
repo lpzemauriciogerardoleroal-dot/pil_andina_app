@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Rotacion - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header"><h1>Rotacion de Inventario (Ultimos 30 dias)</h1></div>
+        <div class="card">
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Producto</th><th>Presentacion</th><th>Salidas (30d)</th><th>Entradas (30d)</th><th>Stock Actual</th></tr>
+                    {% for d in datos %}
+                    <tr>
+                        <td>{{ d.nombre_comercial }}</td>
+                        <td>{{ d.presentacion }}</td>
+                        <td>{{ d.salidas_30dias | format_number }}</td>
+                        <td>{{ d.entradas_30dias | format_number }}</td>
+                        <td>{{ d.stock_actual | format_number }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

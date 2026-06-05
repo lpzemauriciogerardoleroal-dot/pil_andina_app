@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Panel Admin - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="section-title">Administracion</li>
+            <li><a href="{{ url_for('admin.usuarios') }}" class="{% if request.endpoint=='admin.usuarios' %}active{% endif %}">👥 Usuarios y Roles</a></li>
+            <li><a href="{{ url_for('admin.auditoria') }}" class="{% if request.endpoint=='admin.auditoria' %}active{% endif %}">📋 Auditoria</a></li>
+            <li><a href="{{ url_for('admin.monitoreo') }}" class="{% if request.endpoint=='admin.monitoreo' %}active{% endif %}">📡 Monitoreo BD</a></li>
+            <li class="section-title">Reportes</li>
+            <li><a href="{{ url_for('admin.reporte_stock') }}">📦 Stock Consolidado</a></li>
+            <li><a href="{{ url_for('admin.reporte_vencer') }}">⏰ Proximos a Vencer</a></li>
+            <li><a href="{{ url_for('admin.reporte_rotacion') }}">🔄 Rotacion Inventario</a></li>
+            <li class="section-title">Sistema</li>
+            <li><a href="{{ url_for('admin.backups') }}" class="{% if request.endpoint=='admin.backups' %}active{% endif %}">💾 Backups</a></li>
+        </ul>
+    </aside>
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Panel de Administracion</h1>
+            <p>Gestion de usuarios, auditoria, monitoreo y backups</p>
+        </div>
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header"><h3>👥 Usuarios</h3></div>
+                <div class="card-body"><a href="{{ url_for('admin.usuarios') }}" class="btn btn-primary">Gestionar</a></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>📡 Monitoreo</h3></div>
+                <div class="card-body"><a href="{{ url_for('admin.monitoreo') }}" class="btn btn-primary">Ver Estado</a></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>💾 Backups</h3></div>
+                <div class="card-body"><a href="{{ url_for('admin.backups') }}" class="btn btn-primary">Gestionar</a></div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

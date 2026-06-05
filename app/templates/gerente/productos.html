@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Productos - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Catalogo de Productos</h1></div>
+    <div class="filter-bar">
+        <form method="GET" class="filter-bar" style="width:100%;">
+            <div class="filter-group"><label>Buscar</label><input type="text" name="q" value="{{ request.args.get('q','') }}" placeholder="Nombre o codigo..."></div>
+            <div class="filter-group"><label>Tipo</label>
+                <select name="tipo"><option value="">Todos</option><option value="Lager" {% if request.args.get('tipo')=='Lager' %}selected{% endif %}>Lager</option><option value="Pilsener" {% if request.args.get('tipo')=='Pilsener' %}selected{% endif %}>Pilsener</option><option value="Malta" {% if request.args.get('tipo')=='Malta' %}selected{% endif %}>Malta</option><option value="Negra" {% if request.args.get('tipo')=='Negra' %}selected{% endif %}>Negra</option></select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="{{ url_for('gerente.productos') }}" class="btn btn-secondary">Limpiar</a>
+        </form>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="data-table">
+                <tr><th>Codigo</th><th>Nombre</th><th>Tipo</th><th>Presentacion</th><th>Grad. Alcohol</th><th>Precio</th><th>Stock Min</th><th>Stock Max</th><th>Estado</th></tr>
+                {% for p in productos %}
+                <tr>
+                    <td>{{ p.codigo_unico }}</td>
+                    <td>{{ p.nombre_comercial }}</td>
+                    <td>{{ p.tipo }}</td>
+                    <td>{{ p.presentacion }}</td>
+                    <td>{{ p.graduacion_alcoholica }}%</td>
+                    <td>{{ p.precio_actual | format_money }}</td>
+                    <td>{{ p.stock_minimo }}</td>
+                    <td>{{ p.stock_maximo }}</td>
+                    <td>{% if p.activo %}<span class="badge badge-success">Activo</span>{% else %}<span class="badge badge-secondary">Inactivo</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

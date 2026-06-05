@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Monitoreo - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header"><h1>Monitoreo de Base de Datos</h1></div>
+
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header"><h3>Conexiones Activas</h3></div>
+                <div class="card-body" style="max-height:300px; overflow:auto;">
+                    <table class="data-table">
+                        <tr><th>ID</th><th>Usuario</th><th>DB</th><th>Comando</th><th>Tiempo</th></tr>
+                        {% for c in conexiones %}
+                        <tr><td>{{ c.ID }}</td><td>{{ c.USER }}</td><td>{{ c.DB }}</td><td>{{ c.COMMAND }}</td><td>{{ c.TIME }}s</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Estadisticas de Tablas</h3></div>
+                <div class="card-body" style="max-height:300px; overflow:auto;">
+                    <table class="data-table">
+                        <tr><th>Tabla</th><th>Filas</th><th>Tamano (MB)</th></tr>
+                        {% for e in estadisticas %}
+                        <tr><td>{{ e.TABLE_NAME }}</td><td>{{ e.TABLE_ROWS | format_number }}</td><td>{{ e.size_mb }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Consultas Lentas</h3></div>
+                <div class="card-body" style="max-height:300px; overflow:auto;">
+                    {% if lentas %}
+                    <table class="data-table">
+                        <tr><th>Consulta</th><th>Ejecuciones</th><th>Tiempo Prom (ms)</th></tr>
+                        {% for l in lentas %}
+                        <tr><td>{{ l.query[:80] }}...</td><td>{{ l.exec_count }}</td><td>{{ "%.2f"|format(l.avg_time_ms) }}</td></tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <p style="color:#64748b;">No hay consultas lentas registradas o el log no esta activado.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

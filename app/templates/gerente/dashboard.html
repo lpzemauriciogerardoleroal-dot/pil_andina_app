@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Panel Gerente - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Panel de Gerencia</h1><p>Reportes y consultas operativas</p></div>
+    <div class="grid-3">
+        <div class="card">
+            <div class="card-header"><h3>📦 Productos</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.productos') }}" class="btn btn-primary">Ver Catalogo</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>🏭 Inventario</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.inventario') }}" class="btn btn-primary">Consultar Stock</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>📋 Pedidos</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.pedidos') }}" class="btn btn-primary">Gestionar Pedidos</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>🏷️ Lotes</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.lotes') }}" class="btn btn-primary">Ver Lotes</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>📊 Stock Consolidado</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.reporte_stock') }}" class="btn btn-primary">Ver Reporte</a></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>⏰ Proximos a Vencer</h3></div>
+            <div class="card-body"><a href="{{ url_for('gerente.reporte_vencer') }}" class="btn btn-primary">Ver Alertas</a></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

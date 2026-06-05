@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Proximos a Vencer - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header"><h1>Productos Proximos a Vencer (30 dias)</h1></div>
+        <div class="card">
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Lote</th><th>Producto</th><th>Presentacion</th><th>Vencimiento</th><th>Dias Restantes</th><th>Unidades</th><th>Planta</th><th>Prioridad</th></tr>
+                    {% for d in datos %}
+                    <tr class="{% if d.prioridad=='URGENTE' %}critical{% elif d.prioridad=='PROXIMO' %}warning{% endif %}">
+                        <td>{{ d.numero_lote }}</td>
+                        <td>{{ d.nombre_comercial }}</td>
+                        <td>{{ d.presentacion }}</td>
+                        <td>{{ d.fecha_vencimiento }}</td>
+                        <td>{{ d.dias_restantes }}</td>
+                        <td>{{ d.unidades_disponibles | format_number }}</td>
+                        <td>{{ d.planta_actual }}</td>
+                        <td><span class="badge badge-{% if d.prioridad=='URGENTE' %}danger{% elif d.prioridad=='PROXIMO' %}warning{% else %}success{% endif %}">{{ d.prioridad }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

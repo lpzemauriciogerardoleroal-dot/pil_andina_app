@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Auditoria - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header"><h1>Auditoria del Sistema</h1></div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header"><h3>Logs de Acceso (Ultimos 100)</h3></div>
+                <div class="card-body" style="max-height:500px; overflow:auto;">
+                    <table class="data-table">
+                        <tr><th>Fecha</th><th>Usuario</th><th>Resultado</th><th>IP</th></tr>
+                        {% for l in logs %}
+                        <tr><td>{{ l.fecha_hora }}</td><td>{{ l.username }}</td>
+                        <td><span class="badge badge-{% if l.resultado=='EXITO' %}success{% else %}danger{% endif %}">{{ l.resultado }}</span></td>
+                        <td>{{ l.ip_origen }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Cambios en BD (Ultimos 100)</h3></div>
+                <div class="card-body" style="max-height:500px; overflow:auto;">
+                    <table class="data-table">
+                        <tr><th>Fecha</th><th>Tabla</th><th>Accion</th><th>Usuario</th></tr>
+                        {% for c in cambios %}
+                        <tr><td>{{ c.fecha_hora }}</td><td>{{ c.tabla_afectada }}</td>
+                        <td><span class="badge badge-info">{{ c.accion }}</span></td>
+                        <td>{{ c.usuario }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

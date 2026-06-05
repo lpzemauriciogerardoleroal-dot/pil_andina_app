@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Inventario - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Inventario por Bodega</h1></div>
+    <div class="filter-bar">
+        <form method="GET" class="filter-bar" style="width:100%;">
+            <div class="filter-group"><label>Bodega</label>
+                <select name="bodega"><option value="">Todas</option>
+                    {% for b in bodegas %}<option value="{{ b.id_bodega }}" {% if request.args.get('bodega')|int==b.id_bodega %}selected{% endif %}>{{ b.planta_nombre }} - {{ b.nombre_bodega }}</option>{% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="data-table">
+                <tr><th>Planta</th><th>Bodega</th><th>Producto</th><th>Presentacion</th><th>Lote</th><th>Cantidad</th><th>Ult. Actualizacion</th></tr>
+                {% for i in inventario %}
+                <tr>
+                    <td>{{ i.planta_nombre }}</td>
+                    <td>{{ i.nombre_bodega }}</td>
+                    <td>{{ i.nombre_comercial }}</td>
+                    <td>{{ i.presentacion }}</td>
+                    <td>{{ i.numero_lote }}</td>
+                    <td>{{ i.cantidad_actual | format_number }}</td>
+                    <td>{{ i.ultima_actualizacion }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

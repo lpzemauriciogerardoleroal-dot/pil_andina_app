@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Stock Consolidado - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="admin-layout">
+    <aside class="sidebar">{% include 'admin/sidebar.html' %}</aside>
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Stock Consolidado por Planta</h1>
+            <div>
+                <a href="{{ url_for('admin.exportar', tipo='productos', formato='csv') }}" class="btn btn-secondary">Exportar CSV</a>
+                <a href="{{ url_for('admin.exportar', tipo='productos', formato='xlsx') }}" class="btn btn-secondary">Exportar Excel</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Producto</th><th>Tipo</th><th>Presentacion</th><th>Planta</th><th>Stock</th><th>Min</th><th>Max</th><th>Estado</th></tr>
+                    {% for d in datos %}
+                    <tr class="{% if d.estado_stock=='CRITICO' %}critical{% elif d.estado_stock=='EXCESO' %}warning{% endif %}">
+                        <td>{{ d.nombre_comercial }}</td>
+                        <td>{{ d.tipo }}</td>
+                        <td>{{ d.presentacion }}</td>
+                        <td>{{ d.planta }}</td>
+                        <td>{{ d.stock_total | format_number }}</td>
+                        <td>{{ d.stock_minimo }}</td>
+                        <td>{{ d.stock_maximo }}</td>
+                        <td><span class="badge badge-{% if d.estado_stock=='CRITICO' %}danger{% elif d.estado_stock=='EXCESO' %}warning{% else %}success{% endif %}">{{ d.estado_stock }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

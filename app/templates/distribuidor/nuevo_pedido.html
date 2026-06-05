@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Nuevo Pedido - Pil Andina</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+{% include 'shared/navbar.html' %}
+<div class="container">
+    <div class="page-header"><h1>Crear Nuevo Pedido</h1></div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('distribuidor.nuevo_pedido') }}">
+        <div class="card" style="margin-bottom:25px;">
+            <div class="card-header"><h3>Datos del Pedido</h3></div>
+            <div class="card-body">
+                <div class="filter-bar">
+                    <div class="filter-group"><label>Fecha de Entrega Requerida</label><input type="date" name="fecha_entrega" required></div>
+                    <div class="filter-group"><label>Observaciones</label><textarea name="observaciones" rows="2" style="min-width:300px;"></textarea></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h3>Seleccionar Productos</h3></div>
+            <div class="card-body">
+                <table class="data-table">
+                    <tr><th>Producto</th><th>Tipo</th><th>Presentacion</th><th>Precio</th><th>Cantidad</th></tr>
+                    {% for p in productos %}
+                    <tr>
+                        <td>{{ p.nombre_comercial }}</td>
+                        <td>{{ p.tipo }}</td>
+                        <td>{{ p.presentacion }}</td>
+                        <td>{{ p.precio_actual | format_money }}</td>
+                        <td><input type="number" name="cantidad_{{ p.id_producto }}" min="0" value="0" style="width:80px;"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top:20px;">
+            <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+            <a href="{{ url_for('distribuidor.dashboard') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
