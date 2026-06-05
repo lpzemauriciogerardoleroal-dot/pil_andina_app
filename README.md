@@ -49,6 +49,7 @@ Sistema integral de gestion de inventario y distribucion para Cerveceria Bolivia
 7. **Acceder:**
    - URL: http://localhost:5000
    - Usuarios demo:
+   - 
 Administrador	admin_pil	AdminPil2026!
 
 Gerente	gerente_lp	GerenteLP2026!
